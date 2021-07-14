@@ -54,7 +54,7 @@ exports.register = (req, res) => {
     }
 
     // check username duplication
-    User.findOneByUsername(username)
+    User.findOneByUsername(email)
     .then(create)
     .then(count)
     .then(assign)
@@ -71,7 +71,7 @@ exports.register = (req, res) => {
 */
 
 exports.login = (req, res) => {
-    const {username, password} = req.body
+    const {email, password} = req.body
     const secret = req.app.get('jwt-secret')
 
     // check the user info & generate the jwt
@@ -87,8 +87,7 @@ exports.login = (req, res) => {
                     jwt.sign(
                         {
                             _id: user._id,
-                            username: user.username,
-                            admin: user.admin
+                            email: user.email
                         }, 
                         secret, 
                         {
@@ -123,7 +122,7 @@ exports.login = (req, res) => {
     }
 
     // find the user
-    User.findOneByUsername(username)
+    User.findOneByUsername(email)
     .then(check)
     .then(respond)
     .catch(onError)

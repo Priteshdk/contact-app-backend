@@ -33,7 +33,7 @@ exports.assignAdmin = (req, res) => {
         })
     }
 
-    User.findOneByUsername(req.params.username)
+    User.findOneByUsername(req.params.email)
     .then(
         user => {
             if(!user) throw new Error('user not found')

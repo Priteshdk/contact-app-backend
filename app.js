@@ -5,12 +5,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+var cors = require('cors')
 
 /* =======================
     LOAD THE CONFIG
 ==========================*/
 const config = require('./config')
-const port = process.env.PORT || 3000 
+const port = process.env.PORT || 8080 
 
 /* =======================
     EXPRESS CONFIGURATION
@@ -23,7 +24,7 @@ app.use(bodyParser.json())
 
 // print the request log on console
 app.use(morgan('dev'))
-
+app.use(cors())
 // set the secret key variable for jwt
 app.set('jwt-secret', config.secret)
 
@@ -45,7 +46,7 @@ app.listen(port, () => {
 /* =======================
     CONNECT TO MONGODB SERVER
 ==========================*/
-mongoose.connect(config.mongodbUri)
+mongoose.connect(config.mongodbUri,{useMongoClient:true})
 mongoose.Promise = global.Promise
 const db = mongoose.connection
 db.on('error', console.error)
